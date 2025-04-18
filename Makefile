@@ -20,15 +20,14 @@ $(TARGET) : $(OBJ)
 clean : $(OBJ) $(TARGET)
 	@rm -rf $(OBJ) $(TARGET)
 
-commit :
-	@git add .; git commit -m "AUTO COMMIT: $(shell date +'%Y-%m-%d %H:%M:%S')"; git push origin main
-
 run : $(TARGET)
 	@./$(TARGET)
 
 all : $(SRC) $(OBJ) $(TARGET)
-	@clear; $(MAKE) clean; $(MAKE); $(MAKE) commit; $(MAKE) run;
+	@clear; $(MAKE) clean; $(MAKE); $(MAKE) run;
 
+commit :
+	@git add .; git commit -m "AUTO COMMIT: $(shell date +'%Y-%m-%d %H:%M:%S')"; git push origin main
 
 MAKEFLAGS += --no-print-directory
-.PHONY: clean run commit all
+.PHONY: clean run all commit
