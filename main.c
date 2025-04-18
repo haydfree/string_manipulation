@@ -1,8 +1,13 @@
 #include <stdio.h>
 
 int
-main(void)
+main(int argc, char** argv)
 {
-    printf("hello world\n");
+    printf("count: %d\n", argc);
+    while (*argv != NULL)
+    {
+        printf("string: %s\n", *argv);
+        argv++;
+    }
     return 0;
 }
