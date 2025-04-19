@@ -86,31 +86,38 @@ concatenate(char* dst, char* src)
     size_t dlen;
     dlen = strlen(dst); 
     strcpy(dst+dlen,src);
-    *(dst+dlen+strlen(src))='\0';
+    dst[dlen+strlen(src)] = '\0';
 }
 
-char**
-concatenateList(int argc, char** argv, char** dst)
+void
+concatenateList(int argc, char** argv, char* dst)
 {
     int i;
-    char** lst;
     if (argc < 0) { exit(1); }
-    lst = malloc(sizeof(char*) * (size_t)argc);
-    for (i = 0; i < argc-1; i++) { concatenate(dst[i], argv[i]); } 
-    return lst;
+    for (i = 0; i < argc; i++)
+    {
+        concatenate(dst, argv[i]);
+    }
 }
 
 int
 main(int argc, char** argv)
 {
-    int i;
-    char** dst;
+    char** res0;
+    char** res1;
+    char* res2;
 
-    dst = malloc(sizeof(char*) * 20);
-    for (i = 0; i < argc; i++) { printf("argv[%d]: %s\n", i, argv[i] ? argv[i] : "NULL"); }
+    res0 = malloc(sizeof(char*) * 32);
+    res1 = malloc(sizeof(char*) * 32);
+    res2 = malloc(sizeof(char) * 32);
 
-    concatenateList(argc, argv, dst); 
-    printList(argc, dst);
+    res0 = uppercaseList(argc, argv);
+    res1 = reverseList(argc, argv);
+    concatenateList(argc, argv, res2);
 
+    printList(argc, res0);
+    printList(argc, res1);
+    printf("%s\n", res2);
+    
     return 0;
 }
