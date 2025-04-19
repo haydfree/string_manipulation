@@ -80,21 +80,37 @@ reverseList(int argc, char** argv)
     return lst;
 }
 
+void
+concatenate(char* dst, char* src)
+{
+    size_t dlen;
+    dlen = strlen(dst); 
+    strcpy(dst+dlen,src);
+    *(dst+dlen+strlen(src))='\0';
+}
+
+char**
+concatenateList(int argc, char** argv, char** dst)
+{
+    int i;
+    char** lst;
+    if (argc < 0) { exit(1); }
+    lst = malloc(sizeof(char*) * (size_t)argc);
+    for (i = 0; i < argc-1; i++) { concatenate(dst[i], argv[i]); } 
+    return lst;
+}
+
 int
 main(int argc, char** argv)
 {
-    char** lst1;
-    char** lst2;
     int i;
+    char** dst;
 
+    dst = malloc(sizeof(char*) * 20);
     for (i = 0; i < argc; i++) { printf("argv[%d]: %s\n", i, argv[i] ? argv[i] : "NULL"); }
 
-    printf("uppercase: \n");
-    lst1 = uppercaseList(argc, argv);
-    printList(argc, lst1);
+    concatenateList(argc, argv, dst); 
+    printList(argc, dst);
 
-    printf("reverse: \n");
-    lst2 = reverseList(argc, argv);
-    printList(argc, lst2);
     return 0;
 }
