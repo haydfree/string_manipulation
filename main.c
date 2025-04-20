@@ -2,17 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-char*
-safeCopy(char* arg)
-{
-    char* str;
-    if (arg == NULL) { return NULL; }
-    str = malloc(strlen(arg) + 1);
-    if (str == NULL) { return NULL; }
-    strcpy(str, arg);
-    return str;
-}
-
 void
 printList(int size, char** lst)
 {
@@ -20,64 +9,51 @@ printList(int size, char** lst)
     for (i = 0; i < size; i++) { printf("%d: %s\n", i, lst[i]); }
 }
 
-char* 
-uppercase(char* arg)
+void
+uppercase(char* dst, char* src)
 {
-    int i;
-    char* str;
+    size_t i;
 
-    str = safeCopy(arg);
-    i = 0;
-    while (str[i] != '\0')
+    for (i = 0; src[i] != '\0'; i++)
     {
-        if (str[i] >= 97 && str[i]<= 122)
+        if (src[i] >= 97 && src[i] <= 122)
         {
-            str[i]-=32;
+            memcpy(dst[i], src[i], 1);
         }
-        i++;
     }
-    return str;
 }
 
-char**
-uppercaseList(int argc, char** argv)
+void
+uppercaseList(int argc, char** argv, char** dst)
 {
     int i;
-    char** lst;
-    if (argc < 0) { exit(1); }
-    lst = malloc(sizeof(char*) * (size_t)argc);
-    for (i = 0; i < argc; i++) { lst[i] = uppercase(argv[i]); } 
-    return lst;
+    if (argc < 0 || sizeof(dst) < sizeof(argv)) { exit(1); }
+    for (i = 0; i < argc; i++) 
+    { 
+        uppercase(dst[i], argv[i]);
+    }
 }
 
-char*
-reverse(char* arg)
+void
+reverse(char* dst, char* src)
 {
-    size_t i,len;
-    char* str;
-    char temp;
-
-    str = safeCopy(arg);
-    len = strlen(str);
-    i = 0;
-    for (i = 0; i < len / 2; i++)
+    size_t i, len;
+    len = strlen(src);
+    for (i = 0; src[i] != '\0'; i++)
     {
-        temp = str[i];
-        str[i] = str[len-i-1];
-        str[len-i-1] = temp;
+        memcpy(dst[i], src[len-i], 1);
     }
-    return str;
 }
 
-char**
-reverseList(int argc, char** argv)
+void
+reverseList(int argc, char** argv, char** dst)
 {
     int i;
-    char** lst;
-    if (argc < 0) { exit(1); }
-    lst = malloc(sizeof(char*) * (size_t)argc);
-    for (i = 0; i < argc; i++) { lst[i] = reverse(argv[i]); } 
-    return lst;
+    if (argc < 0 || sizeof(dst) < sizeof(argv)) { exit(1); }
+    for (i = 0; i < argc; i++) 
+    { 
+        reverse(dst[i], argv[i]); 
+    } 
 }
 
 void
@@ -103,21 +79,9 @@ concatenateList(int argc, char** argv, char* dst)
 int
 main(int argc, char** argv)
 {
-    char** res0;
-    char** res1;
-    char* res2;
-
-    res0 = malloc(sizeof(char*) * 32);
-    res1 = malloc(sizeof(char*) * 32);
-    res2 = malloc(sizeof(char) * 32);
-
-    res0 = uppercaseList(argc, argv);
-    res1 = reverseList(argc, argv);
-    concatenateList(argc, argv, res2);
-
-    printList(argc, res0);
-    printList(argc, res1);
-    printf("%s\n", res2);
-    
+    char* dst;
+    char* arg;
+    uppercase(
+     
     return 0;
 }
