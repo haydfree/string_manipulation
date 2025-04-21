@@ -42,11 +42,7 @@ reverse(char* dst, char* src)
 void
 concatenate(char* dst, char* src)
 {
-    size_t dlen, slen;
-    dlen = strlen(dst); 
-    slen = strlen(src);
-    strcpy(dst+dlen,src);
-    dst[dlen+slen] = '\0';
+    strcat(dst, src);
 }
 
 void
